@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Noël - One Block France</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .save-indicator {
+            text-align: center;
+            color: #28a745;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .item-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .item-recipe {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"] {
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .result {
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .result.positive {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .result.negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .result.complete {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .objectives {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .objective-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .objective-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .reset-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+            transition: background 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #c82333;
+        }
+
+        @media (max-width: 768px) {
+            .item-row {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎄 Event Noël - One Block France 🎄</h1>
+        <p class="subtitle">Calculateur de ressources pour l'event</p>
+        <p class="save-indicator">💾 Sauvegarde automatique activée</p>
+
+        <div class="objectives">
+            <div class="objective-card">
+                <div>Grande Boule Astrale</div>
+                <div class="objective-value">344</div>
+            </div>
+            <div class="objective-card">
+                <div>Boule en Tissu</div>
+                <div class="objective-value">368</div>
+            </div>
+            <div class="objective-card">
+                <div>Pain d'Épice de Noël</div>
+                <div class="objective-value">320</div>
+            </div>
+        </div>
+
+        <!-- Section Boules Astrales -->
+        <div class="section">
+            <div class="section-title">⭐ Chaîne des Boules Astrales</div>
+            
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Grande Boule Astrale</div>
+                    <div class="item-recipe">= 16 Petites Boules Astrales</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="grande_boule" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <input type="number" value="344" readonly style="background: #e9ecef;">
+                </div>
+                <div class="result" id="result_grande_boule">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Petite Boule Astrale</div>
+                    <div class="item-recipe">= 8 Boules de Cristal + 32 Extraits d'Azurite</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="petite_boule" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_petite_boule">0</div>
+                </div>
+                <div class="result" id="result_petite_boule">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Boule de Cristal</div>
+                    <div class="item-recipe">(Ressource vanilla)</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="boule_cristal" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_boule_cristal">0</div>
+                </div>
+                <div class="result" id="result_boule_cristal">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Extrait d'Azurite</div>
+                    <div class="item-recipe">(Ressource vanilla)</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="extrait_azurite" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_extrait_azurite">0</div>
+                </div>
+                <div class="result" id="result_extrait_azurite">0</div>
+            </div>
+        </div>
+
+        <!-- Section Boules en Tissu -->
+        <div class="section">
+            <div class="section-title">🧵 Chaîne des Boules en Tissu</div>
+            
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Boule en Tissu</div>
+                    <div class="item-recipe">= 32 Boîtes de Couture</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="boule_tissu" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <input type="number" value="368" readonly style="background: #e9ecef;">
+                </div>
+                <div class="result" id="result_boule_tissu">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Boîte de Couture</div>
+                    <div class="item-recipe">= 32 Fil de Couture + 32 Cuir Tanné</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="boite_couture" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_boite_couture">0</div>
+                </div>
+                <div class="result" id="result_boite_couture">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Fil de Couture</div>
+                    <div class="item-recipe">(Ressource vanilla)</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="fil_couture" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_fil_couture">0</div>
+                </div>
+                <div class="result" id="result_fil_couture">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Cuir Tanné</div>
+                    <div class="item-recipe">(Ressource vanilla)</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="cuir_tanne" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_cuir_tanne">0</div>
+                </div>
+                <div class="result" id="result_cuir_tanne">0</div>
+            </div>
+        </div>
+
+        <!-- Section Pain d'Épice -->
+        <div class="section">
+            <div class="section-title">🍪 Chaîne des Pains d'Épice</div>
+            
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Pain d'Épice de Noël</div>
+                    <div class="item-recipe">= 64 Sucre + 16 Pain d'Épice</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="pain_epice_noel" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <input type="number" value="320" readonly style="background: #e9ecef;">
+                </div>
+                <div class="result" id="result_pain_epice_noel">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Sucre</div>
+                    <div class="item-recipe">(Ressource vanilla)</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="sucre" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_sucre">0</div>
+                </div>
+                <div class="result" id="result_sucre">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Pain d'Épice</div>
+                    <div class="item-recipe">= 16 Préparation de Noël + 4 Sac de Farine</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="pain_epice" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_pain_epice">0</div>
+                </div>
+                <div class="result" id="result_pain_epice">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Préparation de Noël</div>
+                    <div class="item-recipe">(Ressource vanilla)</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="preparation_noel" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_preparation_noel">0</div>
+                </div>
+                <div class="result" id="result_preparation_noel">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Sac de Farine</div>
+                    <div class="item-recipe">= 32 Farine Pur</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="sac_farine" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_sac_farine">0</div>
+                </div>
+                <div class="result" id="result_sac_farine">0</div>
+            </div>
+
+            <div class="item-row">
+                <div>
+                    <div class="item-name">Farine Pur</div>
+                    <div class="item-recipe">(Ressource vanilla)</div>
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Possédé</label>
+                    <input type="number" id="farine_pur" value="0" min="0">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">Besoin</label>
+                    <div class="result complete" id="need_farine_pur">0</div>
+                </div>
+                <div class="result" id="result_farine_pur">0</div>
+            </div>
+        </div>
+
+        <button class="reset-btn" onclick="resetAll()">🔄 Réinitialiser tout</button>
+    </div>
+
+    <script>
+        const SAVE_KEY = 'minecraft_event_noel_data';
+
+        // Charger les données sauvegardées au démarrage
+        function loadData() {
+            const saved = localStorage.getItem(SAVE_KEY);
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    Object.keys(data).forEach(key => {
+                        const input = document.getElementById(key);
+                        if (input) {
+                            input.value = data[key];
+                        }
+                    });
+                } catch (e) {
+                    console.error('Erreur de chargement:', e);
+                }
+            }
+        }
+
+        // Sauvegarder les données
+        function saveData() {
+            const data = {};
+            const inputs = document.querySelectorAll('input[type="number"]:not([readonly])');
+            inputs.forEach(input => {
+                data[input.id] = parseInt(input.value) || 0;
+            });
+            localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+        }
+
+        function calculate() {
+            // Objectifs finaux
+            const OBJ_GRANDE_BOULE = 344;
+            const OBJ_BOULE_TISSU = 368;
+            const OBJ_PAIN_EPICE_NOEL = 320;
+
+            // Récupération des valeurs actuelles
+            const vals = {
+                grande_boule: parseInt(document.getElementById('grande_boule').value) || 0,
+                petite_boule: parseInt(document.getElementById('petite_boule').value) || 0,
+                boule_cristal: parseInt(document.getElementById('boule_cristal').value) || 0,
+                extrait_azurite: parseInt(document.getElementById('extrait_azurite').value) || 0,
+                
+                boule_tissu: parseInt(document.getElementById('boule_tissu').value) || 0,
+                boite_couture: parseInt(document.getElementById('boite_couture').value) || 0,
+                fil_couture: parseInt(document.getElementById('fil_couture').value) || 0,
+                cuir_tanne: parseInt(document.getElementById('cuir_tanne').value) || 0,
+                
+                pain_epice_noel: parseInt(document.getElementById('pain_epice_noel').value) || 0,
+                sucre: parseInt(document.getElementById('sucre').value) || 0,
+                pain_epice: parseInt(document.getElementById('pain_epice').value) || 0,
+                preparation_noel: parseInt(document.getElementById('preparation_noel').value) || 0,
+                sac_farine: parseInt(document.getElementById('sac_farine').value) || 0,
+                farine_pur: parseInt(document.getElementById('farine_pur').value) || 0
+            };
+
+            // ===== CHAÎNE BOULES ASTRALES =====
+            // Niveau 1: Grande Boule Astrale
+            const missing_grande_boule = Math.max(0, OBJ_GRANDE_BOULE - vals.grande_boule);
+            
+            // Niveau 2: Petite Boule Astrale (besoin brut = ce qui manque pour faire les grandes boules)
+            const need_petite_boule_for_grandes = missing_grande_boule * 16;
+            const total_petite_available = vals.petite_boule;
+            const missing_petite_boule = Math.max(0, need_petite_boule_for_grandes - total_petite_available);
+            
+            // Niveau 3: Boule de Cristal (besoin = fabriquer les petites boules manquantes)
+            const need_boule_cristal_raw = missing_petite_boule * 8;
+            const missing_boule_cristal = Math.max(0, need_boule_cristal_raw - vals.boule_cristal);
+            
+            // Niveau 3: Extrait d'Azurite (besoin = fabriquer les petites boules manquantes)
+            const need_extrait_azurite_raw = missing_petite_boule * 32;
+            const missing_extrait_azurite = Math.max(0, need_extrait_azurite_raw - vals.extrait_azurite);
+
+            // ===== CHAÎNE BOULES EN TISSU =====
+            // Niveau 1: Boule en Tissu
+            const missing_boule_tissu = Math.max(0, OBJ_BOULE_TISSU - vals.boule_tissu);
+            
+            // Niveau 2: Boîte de Couture
+            const need_boite_couture_raw = missing_boule_tissu * 32;
+            const missing_boite_couture = Math.max(0, need_boite_couture_raw - vals.boite_couture);
+            
+            // Niveau 3: Fil de Couture
+            const need_fil_couture_raw = missing_boite_couture * 32;
+            const missing_fil_couture = Math.max(0, need_fil_couture_raw - vals.fil_couture);
+            
+            // Niveau 3: Cuir Tanné
+            const need_cuir_tanne_raw = missing_boite_couture * 32;
+            const missing_cuir_tanne = Math.max(0, need_cuir_tanne_raw - vals.cuir_tanne);
+
+            // ===== CHAÎNE PAIN D'ÉPICE =====
+            // Niveau 1: Pain d'Épice de Noël
+            const missing_pain_epice_noel = Math.max(0, OBJ_PAIN_EPICE_NOEL - vals.pain_epice_noel);
+            
+            // Niveau 2a: Sucre
+            const need_sucre_raw = missing_pain_epice_noel * 64;
+            const missing_sucre = Math.max(0, need_sucre_raw - vals.sucre);
+            
+            // Niveau 2b: Pain d'Épice
+            const need_pain_epice_raw = missing_pain_epice_noel * 16;
+            const missing_pain_epice = Math.max(0, need_pain_epice_raw - vals.pain_epice);
+            
+            // Niveau 3a: Préparation de Noël (pour fabriquer les pains d'épice manquants)
+            const need_preparation_noel_raw = missing_pain_epice * 16;
+            const missing_preparation_noel = Math.max(0, need_preparation_noel_raw - vals.preparation_noel);
+            
+            // Niveau 3b: Sac de Farine (pour fabriquer les pains d'épice manquants)
+            const need_sac_farine_raw = missing_pain_epice * 4;
+            const missing_sac_farine = Math.max(0, need_sac_farine_raw - vals.sac_farine);
+            
+            // Niveau 4: Farine Pur (pour fabriquer les sacs de farine manquants)
+            const need_farine_pur_raw = missing_sac_farine * 32;
+            const missing_farine_pur = Math.max(0, need_farine_pur_raw - vals.farine_pur);
+
+            // ===== AFFICHAGE DES RÉSULTATS =====
+            // Boules Astrales
+            updateResult('result_grande_boule', missing_grande_boule);
+            updateResult('result_petite_boule', missing_petite_boule);
+            updateResult('result_boule_cristal', missing_boule_cristal);
+            updateResult('result_extrait_azurite', missing_extrait_azurite);
+            
+            document.getElementById('need_petite_boule').textContent = need_petite_boule_for_grandes;
+            document.getElementById('need_boule_cristal').textContent = need_boule_cristal_raw;
+            document.getElementById('need_extrait_azurite').textContent = need_extrait_azurite_raw;
+            
+            // Boules en Tissu
+            updateResult('result_boule_tissu', missing_boule_tissu);
+            updateResult('result_boite_couture', missing_boite_couture);
+            updateResult('result_fil_couture', missing_fil_couture);
+            updateResult('result_cuir_tanne', missing_cuir_tanne);
+            
+            document.getElementById('need_boite_couture').textContent = need_boite_couture_raw;
+            document.getElementById('need_fil_couture').textContent = need_fil_couture_raw;
+            document.getElementById('need_cuir_tanne').textContent = need_cuir_tanne_raw;
+            
+            // Pains d'Épice
+            updateResult('result_pain_epice_noel', missing_pain_epice_noel);
+            updateResult('result_sucre', missing_sucre);
+            updateResult('result_pain_epice', missing_pain_epice);
+            updateResult('result_preparation_noel', missing_preparation_noel);
+            updateResult('result_sac_farine', missing_sac_farine);
+            updateResult('result_farine_pur', missing_farine_pur);
+            
+            document.getElementById('need_sucre').textContent = need_sucre_raw;
+            document.getElementById('need_pain_epice').textContent = need_pain_epice_raw;
+            document.getElementById('need_preparation_noel').textContent = need_preparation_noel_raw;
+            document.getElementById('need_sac_farine').textContent = need_sac_farine_raw;
+            document.getElementById('need_farine_pur').textContent = need_farine_pur_raw;
+
+            // Sauvegarder après chaque calcul
+            saveData();
+        }
+
+        function updateResult(id, value) {
+            const el = document.getElementById(id);
+            el.textContent = value > 0 ? `Reste: ${value}` : '✓ Complet';
+            el.className = 'result';
+            if (value > 0) {
+                el.classList.add('negative');
+            } else {
+                el.classList.add('positive');
+            }
+        }
+
+        function resetAll() {
+            if (confirm('Es-tu sûr de vouloir réinitialiser toutes les données ?')) {
+                const inputs = document.querySelectorAll('input[type="number"]:not([readonly])');
+                inputs.forEach(input => input.value = 0);
+                localStorage.removeItem(SAVE_KEY);
+                calculate();
+            }
+        }
+
+        // Écouter les changements et sauvegarder
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', calculate);
+        });
+
+        // Charger les données au démarrage
+        loadData();
+        calculate();
+    </script>
+</body>
+</html>
